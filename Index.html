@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Portal Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3d5fa8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 30px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #5fc9f8;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(95, 201, 248, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #ffffff;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon-wrapper svg {
+            width: 35px;
+            height: 35px;
+        }
+
+        .card:nth-child(1) .icon-wrapper {
+            background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
+        }
+
+        .card:nth-child(2) .icon-wrapper {
+            background: linear-gradient(135deg, #64b5f6 0%, #1976d2 100%);
+        }
+
+        .card:nth-child(3) .icon-wrapper {
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+        }
+
+        .card:nth-child(4) .icon-wrapper {
+            background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+        }
+
+        .card:nth-child(5) .icon-wrapper {
+            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+        }
+
+        .card:nth-child(6) .icon-wrapper {
+            background: linear-gradient(135deg, #26c6da 0%, #00acc1 100%);
+        }
+
+        .card:nth-child(7) .icon-wrapper {
+            background: linear-gradient(135deg, #5c6bc0 0%, #3949ab 100%);
+        }
+
+        .card:nth-child(8) .icon-wrapper {
+            background: linear-gradient(135deg, #ab47bc 0%, #8e24aa 100%);
+        }
+
+        .card:nth-child(9) .icon-wrapper {
+            background: linear-gradient(135deg, #ff7043 0%, #f4511e 100%);
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .launch-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #5fc9f8;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            transition: gap 0.3s ease;
+        }
+
+        .card:hover .launch-button {
+            gap: 12px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="30,20 50,50 30,80" fill="#5fc9f8" opacity="0.8"/>
+            <polygon points="70,20 50,50 70,80" fill="#4dd0e1" opacity="0.9"/>
+        </svg>
+    </div>
+
+    <div class="header">
+        <h1>Azure Portal Launcher</h1>
+        <p class="subtitle">Quick access to all your Azure services with a single click ⚡</p>
+    </div>
+
+    <div class="cards-container">
+        <div class="card" onclick="launchService('intune')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="4" width="10" height="16" rx="2" stroke="white" stroke-width="2" fill="none"/>
+                    <line x1="8" y1="7" x2="12" y2="7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Microsoft Intune</h2>
+            <p class="card-description">Device & App Management</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('portal')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Azure Portal</h2>
+            <p class="card-description">Cloud Services Dashboard</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('entra')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="white"/>
+                    <path d="M19 9h-2V7c0-1.1-.9-2-2-2h-2V3h2c2.21 0 4 1.79 4 4v2z" fill="white" opacity="0.7"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Microsoft Entra ID</h2>
+            <p class="card-description">Identity & Access Management</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('defender')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Microsoft Defender</h2>
+            <p class="card-description">Security Center</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('admin365')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Microsoft 365 Admin</h2>
+            <p class="card-description">Admin Center</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('compliance')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Compliance Center</h2>
+            <p class="card-description">Data Governance & Compliance</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('devops')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Azure DevOps</h2>
+            <p class="card-description">Development & CI/CD</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('aad')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Azure Active Directory</h2>
+            <p class="card-description">Directory Services</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="launchService('monitor')">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm2 4v-2H3c0 1.1.89 2 2 2zM3 9h2V7H3v2zm12 12h2v-2h-2v2zm4-18H9c-1.11 0-2 .9-2 2v10c0 1.1.89 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 12H9V5h10v10zm-8 6h2v-2h-2v2zm-4 0h2v-2H7v2z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Azure Monitor</h2>
+            <p class="card-description">Monitoring & Analytics</p>
+            <div class="launch-button">
+                <span class="dot"></span>
+                <span>Click to launch</span>
+            </div>
+        </div>
+   
+	
+
+<!-- Tutorials card with new icon -->
+<div class="card" onclick="launchService('Tutorials')">
+    <div class="icon-wrapper">
+        <!-- Tutorial icon SVG -->
+        <svg viewBox="0 0 64 64" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16h40v4H12v-4zM12 24h40v4H12v-4zM12 32h40v4H12v-4zM12 40h40v4H12v-4z" />
+        </svg>
+    </div>
+    <h2 class="card-title">Tutorials</h2>
+    <p class="card-description">Training & Documents</p>
+    <div class="launch-button">
+        <span class="dot"></span>
+        <span>Click to launch</span>
+    </div>
+</div>
+
+<div class="card" onclick="launchService('git')">
+    <div class="icon-wrapper" style="background: linear-gradient(135deg, #333 0%, #000 100%);">
+        <!-- GitHub icon SVG -->
+        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" width="35" height="35">
+            <path d="M12 0.297c-6.627 0-12 5.373-12 12 0 5.303 
+                3.438 9.8 8.205 11.385 0.6 0.113 0.82-0.258 0.82-0.577 
+                0-0.285-0.01-1.04-0.015-2.04-3.338 0.726-4.042-1.61-4.042-1.61 
+                -0.546-1.387-1.333-1.757-1.333-1.757-1.089-0.745 0.083-0.729 0.083-0.729 
+                1.205 0.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.304 3.495 0.997 
+                0.108-0.775 0.418-1.305 0.76-1.605-2.665-0.305-5.466-1.332-5.466-5.931 
+                0-1.31 0.468-2.381 1.236-3.221-0.124-0.303-0.535-1.523 0.117-3.176 0 0 
+                1.008-0.322 3.301 1.23 0.957-0.266 1.983-0.399 3.003-0.404 1.02 0.005 2.047 0.138 3.006 0.404 
+                2.291-1.552 3.297-1.23 3.297-1.23 0.655 1.653 0.244 2.873 0.12 3.176 
+                0.77 0.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.48 5.921 
+                0.43 0.372 0.823 1.102 0.823 2.222 0 1.606-0.015 2.898-0.015 3.293 
+                0 0.319 0.216 0.694 0.825 0.576 4.765-1.585 8.199-6.082 8.199-11.384 
+                0-6.627-5.373-12-12-12z"/>
+        </svg>
+    </div>
+    <h2 class="card-title">Scripts</h2>
+    <p class="card-description">My GitHub repository</p>
+    <div class="launch-button">
+        <span class="dot"></span>
+        <span>Click to launch</span>
+    </div>
+</div>
+
+
+
+<!-- New Accops card -->
+<div class="card" onclick="launchService('accops')">
+    <div class="icon-wrapper" style="background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);">
+        <!-- Simple lock icon representing Accops -->
+        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="11" width="12" height="9" rx="2" ry="2" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M8 11V7a4 4 0 1 1 8 0v4" stroke="white" stroke-width="2" fill="none"/>
+        </svg>
+    </div>
+    <h2 class="card-title">Accops</h2>
+    <p class="card-description">Secure Access Solutions</p>
+    <div class="launch-button">
+        <span class="dot"></span>
+        <span>Click to launch</span>
+    </div>
+</div>
+
+	
+
+    <script>
+        function launchService(service) {
+            const urls = {
+                'intune': 'https://endpoint.microsoft.com/',
+                'portal': 'https://portal.azure.com/',
+                'entra': 'https://entra.microsoft.com/',
+                'defender': 'https://security.microsoft.com/',
+                'admin365': 'https://admin.microsoft.com/',
+                'compliance': 'https://purview.microsoft.com/home',
+                'devops': 'https://dev.azure.com/',
+                'aad': 'https://aad.portal.azure.com/',
+                'monitor': 'https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/overview',
+				'Tutorials': 'https://learn.microsoft.com/en-us/azure/?wt.mc_id=rmskilling_docs_onboarding_inproduct_gdc&product=popular',
+				'accops': 'https://docs.accops.com/develop/content/core_features/support.html',
+				'git':'https://github.com/OfficialAshpak',
+            };
+
+            if (urls[service]) {
+                window.open(urls[service], '_blank');
+            }
+        }
+    </script>
+</body>
+
+<!-- Footer developer credit with white color and robot icon -->
+<footer style="text-align:center;  color:#ffffff; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size:0.9rem; ; margin-top:40px; display:flex; justify-content:center; align-items:center; gap:8px;">
+    <!-- Robot icon SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white"  aria-hidden="true">
+        <path d="M7 11h2v2H7v-2zm6 0h2v2h-2v-2z"/>
+        <path d="M21 8h-3V6a3 3 0 0 0-6 0v2H9v8h1v-2h4v2h1v-8zM9 6a1 1 0 0 1 2 0v2H9V6zm6 0a1 1 0 1 1 2 0v2h-2V6zm3 9H6v2h12v-2z"/>
+    </svg>
+    Developed by Ashpak Shaikh
+</footer>
+
+
+</html>
